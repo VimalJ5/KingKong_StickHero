@@ -12,8 +12,7 @@
          <font>
             <Font name="Arial Black" size="37.0" />
          </font></Button>
-      <Rectangle fx:id="tower1" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="286.0" layoutX="187.0" layoutY="405.0" stroke="BLACK" strokeType="INSIDE" width="140.0" />
-      <Rectangle fx:id="tower2" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="286.0" layoutX="475.0" layoutY="405.0" stroke="BLACK" strokeType="INSIDE" width="140.0" />
-      <Circle fx:id="hero" fill="#ff561f" layoutX="257.0" layoutY="353.0" radius="52.0" stroke="BLACK" strokeType="INSIDE" />
+      <Rectangle fx:id="tower1" arcHeight="5.0" arcWidth="5.0" blendMode="SRC_ATOP" fill="DODGERBLUE" height="286.0" layoutX="379.0" layoutY="405.0" stroke="BLACK" strokeType="INSIDE" width="140.0" />
+      <Circle fx:id="hero" centerX="100.0" fill="#ff561f" layoutX="349.0" layoutY="353.0" radius="52.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </AnchorPane>
