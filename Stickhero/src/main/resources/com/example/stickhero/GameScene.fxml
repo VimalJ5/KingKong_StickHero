@@ -5,20 +5,26 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stickhero.PauseController">
+<AnchorPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stickhero.PlayingController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@bg1.png" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="350.0" layoutX="-9.0" layoutY="370.0" stroke="BLACK" strokeType="INSIDE" width="80.0" />
-      <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="23.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true">
+      <Rectangle fx:id="tower1" arcHeight="5.0" arcWidth="5.0" height="350.0" layoutY="370.0" stroke="BLACK" strokeType="INSIDE" width="80.0" />
+      <Rectangle fx:id="endPosition" fill="TRANSPARENT" height="1.0" opacity="0" width="1.0" />
+      <ImageView fx:id="monkeyImageView" fitHeight="50.0" fitWidth="50.0" layoutX="16.0" layoutY="322.0">
          <image>
-            <Image url="@gorilla.png" />
+            <Image url="@monke1.png" />
          </image>
       </ImageView>
-      <Button layoutX="557.0" layoutY="130.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="154.0" text="Click for end screen menu" />
+      <Button layoutX="557.0" layoutY="130.0" mnemonicParsing="false" onAction="#endSceneShift" prefHeight="48.0" prefWidth="154.0" text="END">
+         <font>
+            <Font name="Arial Black" size="24.0" />
+         </font></Button>
+      <Rectangle fx:id="stick" arcHeight="5.0" arcWidth="5.0" fill="#724932" height="5.0" layoutX="83.0" layoutY="338.0" stroke="#c38867" strokeType="INSIDE" width="5.0" x="-5.0" y="8.0" />
    </children>
 </AnchorPane>

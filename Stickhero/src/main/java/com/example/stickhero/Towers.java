@@ -1,10 +1,14 @@
 package com.example.stickhero;
 
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Towers extends Rectangle {
-    private double width;
-    private double height;
+public class Towers {
+    public Rectangle createTower(double height, double width, double x, double y) {
+        Rectangle tower = new Rectangle();
+        tower.setWidth(width);
+        tower.setHeight(height);
+        tower.setX(x);
+        tower.setY(y);
+        return tower;
+    }
 }

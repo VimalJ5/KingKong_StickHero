@@ -1,72 +1,64 @@
 package com.example.stickhero;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Sphere;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    private Stage stage;
+    private Scene gameScene;
+    private Parent root;
+
+    @FXML
+    private AnchorPane mainPane;
+
     @FXML
     private Rectangle tower1;
-    @FXML
-    private Circle hero;
 
     @FXML
-    private ImageView monke;
-
-    @FXML
-    private Rectangle tower3;
-
-
+    private Button playButton;
 
     public void startPosition() {
-        tower1.setLayoutX(379);
-        tower1.setLayoutY(405);
+        tower1.setLayoutX(610);
+        tower1.setLayoutY(372);
     }
-
 
     public void testing(ActionEvent event) {
         System.out.println("Working");
     }
 
     public void gameSceneShift(ActionEvent event) throws IOException {
-        Stage stage;
-        Scene gameScene;
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
         Parent root = loader.load();
 
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        gameScene = new Scene(root);
+        PlayingController playingController = loader.getController();
+
+        Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
+        stage.setResizable(false);
         stage.show();
-
     }
-
-    private void setPositions() {
-
-    }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startPosition();
     }
 }
+

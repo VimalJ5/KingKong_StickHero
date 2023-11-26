@@ -17,8 +17,9 @@ public class MainApplication extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
-        stage.setTitle("StickHero");
+        stage.setTitle("GorillaHero");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
