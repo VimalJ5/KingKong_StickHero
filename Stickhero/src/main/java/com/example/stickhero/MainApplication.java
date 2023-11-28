@@ -19,7 +19,7 @@ public class MainApplication extends Application {
         Scene scene = new Scene(root);
         stage.setTitle("GorillaHero");
         stage.setScene(scene);
-        stage.setResizable(false);
+        //stage.setResizable(false);
         stage.show();
     }
 

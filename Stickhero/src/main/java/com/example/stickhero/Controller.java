@@ -52,7 +52,7 @@ public class Controller implements Initializable {
 
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
-        stage.setResizable(false);
+        //stage.setResizable(false);
         stage.show();
     }
 

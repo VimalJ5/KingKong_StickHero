@@ -1,38 +1,82 @@
 package com.example.stickhero;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
-import java.util.concurrent.BlockingDeque;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Monkey {
     private boolean isUpside;
     private Banana banana;
     private ImageView monkeyImageView;
-    private Rectangle block;
+    private Towers tower;
+    private Timeline monkeywalk;
+    private double frame_changer;
+    private List<Image> walkingFrame;
 
     private final int width = 50;
     private final int height = 50;
 
-    public Monkey(ImageView monkeyImageView, Banana banana, Rectangle tower) {
+    public Monkey(ImageView monkeyImageView, Banana banana, Towers tower) {
         this.isUpside = false;
         this.monkeyImageView = monkeyImageView;
         this.banana = banana;
-        this.block = tower;
-    }
+        this.tower = tower;
+        this.frame_changer = 0.0;
+        this.walkingFrame = new ArrayList<>();
 
-    public void walkingMotion(double deltaX) {
-        monkeyImageView.setLayoutX(monkeyImageView.getLayoutX() + deltaX);
+        for (int i = 1; i <= 8; i++) {
+            String imagePath = "monke" + i + ".png"; // Adjust the file name format based on your images
+            Image frame = new Image(getClass().getResourceAsStream(imagePath));
+            walkingFrame.add(frame);
+        }
     }
 
     public void setPosition(double x, double y) {
-        monkeyImageView.setLayoutX(x);
-        monkeyImageView.setLayoutY(y);
+        monkeyImageView.setX(x);
+        monkeyImageView.setY(y);
     }
 
-    public void monkeyWalk()
+    public void monkeyWalking(Rectangle starting, Rectangle ending, double starting_pos)
     {
-        
+        monkeywalk = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+            if(this.monkeyImageView.getLayoutX() < ending.getX() - this.monkeyImageView.getFitWidth()){
+                if((int)frame_changer %8 == 0){
+                    this.monkeyImageView.setImage(walkingFrame.get(7));
+                } else if((int)frame_changer % 7 == 0) {
+                    this.monkeyImageView.setImage(walkingFrame.get(6));
+                } else if((int)frame_changer % 6 == 0) {
+                    this.monkeyImageView.setImage(walkingFrame.get(5));
+                } else if((int)frame_changer % 5 == 0) {
+                    this.monkeyImageView.setImage(walkingFrame.get(4));
+                } else if((int)frame_changer % 4 == 0) {
+                    this.monkeyImageView.setImage(walkingFrame.get(3));
+                } else if((int)frame_changer % 3 == 0) {
+                    this.monkeyImageView.setImage(walkingFrame.get(2));
+                } else if((int)frame_changer % 2 == 0) {
+                    this.monkeyImageView.setImage(walkingFrame.get(1));
+                } else {
+                    this.monkeyImageView.setImage(walkingFrame.get(0));
+                }
+                frame_changer+=0.05;
+                this.monkeyImageView.setX(monkeyImageView.getX()+1);
+            }
+            else {
+                stopping_hero();
+            }
+        }));
+
+        monkeywalk.setCycleCount(Timeline.INDEFINITE);
+        monkeywalk.play();
+    }
+
+    private void stopping_hero() {
+        monkeywalk.stop();
     }
 
     public boolean isUpside() {
@@ -59,11 +103,13 @@ public class Monkey {
         this.monkeyImageView = monkeyImageView;
     }
 
-    public Rectangle getBlock() {
-        return block;
+    public Towers getTower() {
+        return tower;
     }
 
-    public void setBlock(Rectangle block) {
-        this.block = block;
+    public void setTower(Towers tower) {
+        this.tower = tower;
     }
+
+
 }

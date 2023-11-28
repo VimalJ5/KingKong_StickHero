@@ -1,6 +1,7 @@
 package com.example.stickhero;
 
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,13 +11,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.EventObject;
 import java.util.Random;
 import java.util.ResourceBundle;
 
@@ -40,8 +41,11 @@ public class PlayingController implements Initializable {
     @FXML
     private Rectangle endPosition;
 
+    @FXML
+    private Rectangle tower2;
+
     private Monkey monkeyCharacter;
-    private Towers towers;
+    private Towers towersClass;
     private Banana banana;
 
     @Override
@@ -50,15 +54,44 @@ public class PlayingController implements Initializable {
     }
 
     private void initializeGame() {
-        monkeyCharacter = new Monkey(monkeyImageView, banana, tower1);
-        towers = new Towers();
+        towersClass = new Towers();
+        monkeyCharacter = new Monkey(monkeyImageView, banana, towersClass);
         banana = new Banana();
         initialSetups();
+
+        Thread gameThread = new Thread(() -> {
+            try {
+                Thread.sleep(2550);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+
+            Platform.runLater(() -> {
+
+                startGame();
+            });
+        });
+
+        gameThread.start();
+    }
+
+    private void startGame(){
+//        tower1.setLayoutX(100);
+        System.out.println("After layout changes:");
+        System.out.println(tower1.getX());
+        System.out.println(tower1.getLayoutX());
+
+        System.out.println("Game is starting bow bow bow");
+
     }
 
     private void initialSetups() {
-        tower1.setLayoutX(610);
-        tower1.setLayoutY(372);
+//        tower1.setLayoutX(610);
+//        tower1.setLayoutY(372);
+        tower1.setX(610);
+        tower1.setY(372);
+        tower1.setWidth(100);
 
         monkeyCharacter.setPosition(629, 324);
         stick.setVisible(false);
@@ -67,69 +100,72 @@ public class PlayingController implements Initializable {
     }
 
     private void stickPlacement() {
-        // Create a new stick rectangle
         Rectangle stickRectangle = new Rectangle();
 
-        // Set its properties
         stickRectangle.setWidth(5);
         stickRectangle.setHeight(5);
-        stickRectangle.setFill(javafx.scene.paint.Color.BLACK); // Set your desired color
+        stickRectangle.setFill(Color.SANDYBROWN);
 
-        // Calculate the position on top of the tower
-        double stickX = tower1.getLayoutX() + tower1.getWidth() / 2 - stickRectangle.getWidth() / 2;
+        double stickX = tower1.getWidth() + tower1.getX();
         double stickY = tower1.getLayoutY() - stickRectangle.getHeight();
 
-        // Set the position
         stickRectangle.setLayoutX(stickX);
         stickRectangle.setLayoutY(stickY);
 
-        // Add the stick to the gamePane
         gamePane.getChildren().add(stickRectangle);
     }
 
-
     private void init_moveMonkeyAndTower() {
-        ParallelTransition moveTransition = new ParallelTransition();
-        ParallelTransition StickandTower = new ParallelTransition();
 
-        double monkeyTranslateX = 23 - 629;
-        double monkeyTranslateY = 0 ;
-        double towerTranslateX = -610;
-        double towerTranslateY = 0;
-
-        TranslateTransition monkeyTransition = new TranslateTransition(Duration.seconds(1), monkeyImageView);
-        monkeyTransition.setToX(monkeyTranslateX);
-        monkeyTransition.setToY(monkeyTranslateY);
-
-        TranslateTransition towerTransition = new TranslateTransition(Duration.seconds(1), tower1);
-        towerTransition.setToX(towerTranslateX);
-        towerTransition.setToY(towerTranslateY);
-
-        moveTransition.getChildren().addAll(monkeyTransition, towerTransition);
-
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), endPosition);
-        fadeTransition.setToValue(1.0);
-
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.75), e -> {
-            moveTransition.play();
-
-            fadeTransition.play();
-
-            fadeTransition.setOnFinished(event -> createNewRectangle());
-        }),
-            new KeyFrame(Duration.seconds(1.75), e -> stickPlacement())
-        );
-        timeline.play();
     }
+
+
+
+//    private void init_moveMonkeyAndTower() {
+//        ParallelTransition moveTransition = new ParallelTransition();
+//
+//        double monkeyTranslateX = 23 - 629;
+//        double monkeyTranslateY = 0 ;
+//        double towerTranslateX = -510;
+//        double towerTranslateY = 0;
+//
+//        TranslateTransition monkeyTransition = new TranslateTransition(Duration.seconds(1), monkeyImageView);
+//        monkeyTransition.setToX(monkeyTranslateX);
+//        monkeyTransition.setToY(monkeyTranslateY);
+//
+//        TranslateTransition towerTransition = new TranslateTransition(Duration.seconds(1), tower1);
+//        //towerTransition.setFromX(tower1.getLayoutX());
+//        towerTransition.setToX(towerTranslateX);
+//        towerTransition.setToY(towerTranslateY);
+//
+//        moveTransition.getChildren().addAll(monkeyTransition, towerTransition);
+//
+//        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), endPosition);
+//        fadeTransition.setToValue(1.0);
+//
+//        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.75), e -> {
+//            moveTransition.play();
+//
+//            fadeTransition.play();
+//
+//            fadeTransition.setOnFinished(event -> {
+//                createNewRectangle();
+//            });
+//        }),
+//                new KeyFrame(Duration.seconds(1.75), e -> stickPlacement())
+//        );
+//        timeline.play();
+//    }
+
 
     private void createNewRectangle() {
         Random rand = new Random();
         double randomX = 95 + rand.nextDouble() * (720);
         double randomWidth = 80 + rand.nextDouble() * (165);
 
-        Rectangle newRectangle = towers.createTower(350, randomWidth, randomX, 370);
+        tower2 = towersClass.createTower(350, randomWidth, randomX, 370);
 
-        gamePane.getChildren().add(newRectangle);
+        gamePane.getChildren().add(tower2);
     }
 
     public void endSceneShift(ActionEvent event) throws IOException {
