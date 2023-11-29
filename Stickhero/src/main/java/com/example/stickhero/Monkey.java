@@ -44,9 +44,9 @@ public class Monkey {
 
     public void monkeyWalking(Rectangle starting, Rectangle ending)
     {
-        monkeywalk = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+        monkeywalk = new Timeline(new KeyFrame(Duration.seconds(0.02), event -> {
             if(this.monkeyImageView.getX() < ending.getX() + this.monkeyImageView.getFitWidth()){
-                frame_changer += 0.5 ;
+                frame_changer += 0.25 ;
                 if((int)frame_changer == 8){
                     this.monkeyImageView.setImage(walkingFrame.get(7));
                 } else if((int)frame_changer ==7 ) {
