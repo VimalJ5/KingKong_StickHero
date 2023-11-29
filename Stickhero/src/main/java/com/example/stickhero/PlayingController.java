@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -48,6 +49,8 @@ public class PlayingController implements Initializable {
     private Towers towersClass;
     private Banana banana;
 
+    private Timeline init_pos;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeGame();
@@ -77,23 +80,22 @@ public class PlayingController implements Initializable {
     }
 
     private void startGame(){
-//        tower1.setLayoutX(100);
-        System.out.println("After layout changes:");
         System.out.println(tower1.getX());
-        System.out.println(tower1.getLayoutX());
-
         System.out.println("Game is starting bow bow bow");
+        stickPlacement();
+        System.out.println("Stick is done");
+        monkeyCharacter.monkeyWalking(tower1,tower2);
 
     }
 
     private void initialSetups() {
-//        tower1.setLayoutX(610);
-//        tower1.setLayoutY(372);
+        tower1.setLayoutX(0);
+        tower1.setLayoutY(0);
         tower1.setX(610);
-        tower1.setY(372);
+        tower1.setY(422);
         tower1.setWidth(100);
 
-        monkeyCharacter.setPosition(629, 324);
+        monkeyCharacter.setPosition(629, 374);
         stick.setVisible(false);
 
         init_moveMonkeyAndTower();
@@ -104,66 +106,47 @@ public class PlayingController implements Initializable {
 
         stickRectangle.setWidth(5);
         stickRectangle.setHeight(5);
-        stickRectangle.setFill(Color.SANDYBROWN);
+        stickRectangle.setFill(Color.SADDLEBROWN);
+        stickRectangle.setStrokeWidth(1);
+        stickRectangle.setStroke(Color.DARKKHAKI);
 
-        double stickX = tower1.getWidth() + tower1.getX();
-        double stickY = tower1.getLayoutY() - stickRectangle.getHeight();
+        double stickX = tower1.getWidth() + tower1.getX() - stickRectangle.getWidth();
+        double stickY = tower1.getY() - stickRectangle.getHeight();
 
-        stickRectangle.setLayoutX(stickX);
-        stickRectangle.setLayoutY(stickY);
+        stickRectangle.setX(stickX);
+        stickRectangle.setY(stickY);
 
         gamePane.getChildren().add(stickRectangle);
     }
 
     private void init_moveMonkeyAndTower() {
-
+        init_pos = new Timeline(new KeyFrame(Duration.seconds(0.005), event -> {
+            if (monkeyCharacter.getMonkeyImageView().getX() > 30.0) {
+                monkeyCharacter.getMonkeyImageView().setX(monkeyCharacter.getMonkeyImageView().getX() - 2);
+                tower1.setX(tower1.getX() - 2);
+            } else {
+                stop_init_pos();
+            }
+        }));
+        init_pos.setCycleCount(Timeline.INDEFINITE);
+        init_pos.play();
     }
 
-
-
-//    private void init_moveMonkeyAndTower() {
-//        ParallelTransition moveTransition = new ParallelTransition();
-//
-//        double monkeyTranslateX = 23 - 629;
-//        double monkeyTranslateY = 0 ;
-//        double towerTranslateX = -510;
-//        double towerTranslateY = 0;
-//
-//        TranslateTransition monkeyTransition = new TranslateTransition(Duration.seconds(1), monkeyImageView);
-//        monkeyTransition.setToX(monkeyTranslateX);
-//        monkeyTransition.setToY(monkeyTranslateY);
-//
-//        TranslateTransition towerTransition = new TranslateTransition(Duration.seconds(1), tower1);
-//        //towerTransition.setFromX(tower1.getLayoutX());
-//        towerTransition.setToX(towerTranslateX);
-//        towerTransition.setToY(towerTranslateY);
-//
-//        moveTransition.getChildren().addAll(monkeyTransition, towerTransition);
-//
-//        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), endPosition);
-//        fadeTransition.setToValue(1.0);
-//
-//        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.75), e -> {
-//            moveTransition.play();
-//
-//            fadeTransition.play();
-//
-//            fadeTransition.setOnFinished(event -> {
-//                createNewRectangle();
-//            });
-//        }),
-//                new KeyFrame(Duration.seconds(1.75), e -> stickPlacement())
-//        );
-//        timeline.play();
-//    }
-
+    private void stop_init_pos() {
+        init_pos.stop();
+        createNewRectangle();
+        FadeTransition newblockFade = new FadeTransition(Duration.seconds(0.4),tower2);
+        newblockFade.setToValue(1);
+        newblockFade.play();
+    }
 
     private void createNewRectangle() {
         Random rand = new Random();
         double randomX = 95 + rand.nextDouble() * (720);
         double randomWidth = 80 + rand.nextDouble() * (165);
 
-        tower2 = towersClass.createTower(350, randomWidth, randomX, 370);
+        tower2 = towersClass.createTower(350, randomWidth, randomX, 420);
+        tower2.setOpacity(0);
 
         gamePane.getChildren().add(tower2);
     }

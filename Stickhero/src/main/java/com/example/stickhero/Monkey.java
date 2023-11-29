@@ -31,7 +31,7 @@ public class Monkey {
         this.walkingFrame = new ArrayList<>();
 
         for (int i = 1; i <= 8; i++) {
-            String imagePath = "monke" + i + ".png"; // Adjust the file name format based on your images
+            String imagePath = "monke" + i + ".png";
             Image frame = new Image(getClass().getResourceAsStream(imagePath));
             walkingFrame.add(frame);
         }
@@ -42,31 +42,36 @@ public class Monkey {
         monkeyImageView.setY(y);
     }
 
-    public void monkeyWalking(Rectangle starting, Rectangle ending, double starting_pos)
+    public void monkeyWalking(Rectangle starting, Rectangle ending)
     {
         monkeywalk = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
-            if(this.monkeyImageView.getLayoutX() < ending.getX() - this.monkeyImageView.getFitWidth()){
-                if((int)frame_changer %8 == 0){
+            if(this.monkeyImageView.getX() < ending.getX() + this.monkeyImageView.getFitWidth()){
+                frame_changer += 0.5 ;
+                if((int)frame_changer == 8){
                     this.monkeyImageView.setImage(walkingFrame.get(7));
-                } else if((int)frame_changer % 7 == 0) {
+                } else if((int)frame_changer ==7 ) {
                     this.monkeyImageView.setImage(walkingFrame.get(6));
-                } else if((int)frame_changer % 6 == 0) {
+                } else if((int)frame_changer == 6) {
                     this.monkeyImageView.setImage(walkingFrame.get(5));
-                } else if((int)frame_changer % 5 == 0) {
+                } else if((int)frame_changer == 5) {
                     this.monkeyImageView.setImage(walkingFrame.get(4));
-                } else if((int)frame_changer % 4 == 0) {
+                } else if((int)frame_changer == 4) {
                     this.monkeyImageView.setImage(walkingFrame.get(3));
-                } else if((int)frame_changer % 3 == 0) {
+                } else if((int)frame_changer == 3) {
                     this.monkeyImageView.setImage(walkingFrame.get(2));
-                } else if((int)frame_changer % 2 == 0) {
+                } else if((int)frame_changer == 2) {
                     this.monkeyImageView.setImage(walkingFrame.get(1));
                 } else {
                     this.monkeyImageView.setImage(walkingFrame.get(0));
                 }
-                frame_changer+=0.05;
-                this.monkeyImageView.setX(monkeyImageView.getX()+1);
+                if(frame_changer == 8)
+                {
+                    frame_changer = 0;
+                }
+                this.monkeyImageView.setX(monkeyImageView.getX()+2.5);
             }
             else {
+                this.monkeyImageView.setImage(walkingFrame.get(0));
                 stopping_hero();
             }
         }));
