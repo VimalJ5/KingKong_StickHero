@@ -115,47 +115,47 @@ public class PlayingController implements Initializable {
         gamePane.getChildren().add(stickRectangle);
     }
 
-    private void init_moveMonkeyAndTower() {
-
-    }
-
-
-
 //    private void init_moveMonkeyAndTower() {
-//        ParallelTransition moveTransition = new ParallelTransition();
 //
-//        double monkeyTranslateX = 23 - 629;
-//        double monkeyTranslateY = 0 ;
-//        double towerTranslateX = -510;
-//        double towerTranslateY = 0;
-//
-//        TranslateTransition monkeyTransition = new TranslateTransition(Duration.seconds(1), monkeyImageView);
-//        monkeyTransition.setToX(monkeyTranslateX);
-//        monkeyTransition.setToY(monkeyTranslateY);
-//
-//        TranslateTransition towerTransition = new TranslateTransition(Duration.seconds(1), tower1);
-//        //towerTransition.setFromX(tower1.getLayoutX());
-//        towerTransition.setToX(towerTranslateX);
-//        towerTransition.setToY(towerTranslateY);
-//
-//        moveTransition.getChildren().addAll(monkeyTransition, towerTransition);
-//
-//        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), endPosition);
-//        fadeTransition.setToValue(1.0);
-//
-//        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.75), e -> {
-//            moveTransition.play();
-//
-//            fadeTransition.play();
-//
-//            fadeTransition.setOnFinished(event -> {
-//                createNewRectangle();
-//            });
-//        }),
-//                new KeyFrame(Duration.seconds(1.75), e -> stickPlacement())
-//        );
-//        timeline.play();
 //    }
+
+
+
+    private void init_moveMonkeyAndTower() {
+        ParallelTransition moveTransition = new ParallelTransition();
+
+        double monkeyTranslateX = 23 - 629;
+        double monkeyTranslateY = 0 ;
+        double towerTranslateX = -510;
+        double towerTranslateY = 0;
+
+        TranslateTransition monkeyTransition = new TranslateTransition(Duration.seconds(1), monkeyImageView);
+        monkeyTransition.setToX(monkeyTranslateX);
+        monkeyTransition.setToY(monkeyTranslateY);
+
+        TranslateTransition towerTransition = new TranslateTransition(Duration.seconds(1), tower1);
+        //towerTransition.setFromX(tower1.getLayoutX());
+        towerTransition.setToX(towerTranslateX);
+        towerTransition.setToY(towerTranslateY);
+
+        moveTransition.getChildren().addAll(monkeyTransition, towerTransition);
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1), endPosition);
+        fadeTransition.setToValue(1.0);
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.75), e -> {
+            moveTransition.play();
+
+            fadeTransition.play();
+
+            fadeTransition.setOnFinished(event -> {
+                createNewRectangle();
+            });
+        }),
+                new KeyFrame(Duration.seconds(1.75), e -> stickPlacement())
+        );
+        timeline.play();
+    }
 
 
     private void createNewRectangle() {
