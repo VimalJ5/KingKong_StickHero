@@ -26,5 +26,6 @@
             <Font name="Arial Black" size="24.0" />
          </font></Button>
       <Rectangle fx:id="stick" arcHeight="5.0" arcWidth="5.0" fill="#724932" height="5.0" layoutX="83.0" layoutY="338.0" stroke="#c38867" strokeType="INSIDE" visible="false" width="5.0" x="-5.0" y="8.0" />
+      <Rectangle fx:id="tower2" arcHeight="5.0" arcWidth="5.0" height="350.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="80.0" />
    </children>
 </AnchorPane>

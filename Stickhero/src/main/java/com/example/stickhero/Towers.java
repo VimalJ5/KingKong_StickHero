@@ -1,14 +1,18 @@
 package com.example.stickhero;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.util.Random;
+
 public class Towers {
     ActionEvent event;
     private Timeline moveSceneTimeline;
+    private Timeline initalTimeline;
+    private
+    Random rand = new Random();
     public Rectangle createTower(double height, double width, double x, double y) {
         Rectangle tower = new Rectangle();
         tower.setWidth(width);
@@ -18,21 +22,61 @@ public class Towers {
         return tower;
     }
 
-    public void initialTimeline(Rectangle starting, Rectangle Ending, double start_pos, Monkey monkey)
+    public void setTowerpos(Rectangle tower)
     {
+        double randomX = 95 + rand.nextDouble() * (720);
+        double randomWidth = 80 + rand.nextDouble() * (165);
+
+        tower.setWidth(randomWidth);
+        tower.setHeight(350);
+        tower.setX(randomX);
+        tower.setY(420);
+        tower.setOpacity(0);
+    }
+
+    public void initTimeline(Monkey monkey, Stick stick, Towers towers)
+    {
+        initalTimeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+            Rectangle tower = monkey.getNextTower();
+            setTowerpos(tower);
+
+            FadeTransition newblockFade = new FadeTransition(Duration.seconds(0.4), tower);
+            newblockFade.setToValue(1);
+
+            TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(1), tower);
+            translateTransition.setFromY(tower.getY());
+            translateTransition.setToY(0);
+            translateTransition.setOnFinished(event1 -> tower.setTranslateY(0));
+
+            ParallelTransition parallelTransition = new ParallelTransition(newblockFade, translateTransition);
+
+            parallelTransition.play();
+            parallelTransition.setOnFinished(event2 -> {
+                stop_initTimeline(monkey,stick,towers);
+            } );
+        }));
+        initalTimeline.setCycleCount(1);
+        initalTimeline.play();
 
     }
 
+    public void stop_initTimeline(Monkey monkey, Stick stick, Towers towers){
+        initalTimeline.stop();
+        stick.StickGrowTimeline(monkey, stick, towers);
+    }
+    public void moveScene( Monkey monkey, Stick stick, Towers towers) {
+        Rectangle first = monkey.getCurrentTower();
+        Rectangle second = monkey.getNextTower();
+        double start_pos = 20;
 
-    public void moveScene(Rectangle first, Rectangle second, double start_pos, Monkey monkey) {
-
-        moveSceneTimeline = new Timeline(new KeyFrame(Duration.seconds(0.005), event -> {
-            if (second.getX() > start_pos) {
-                first.setX(first.getX() - 1);
-                second.setX(second.getX() - 1);
-                monkey.getMonkeyImageView().setX(monkey.getMonkeyImageView().getX() - 1);
+        moveSceneTimeline = new Timeline(new KeyFrame(Duration.seconds(0.009), event -> {
+            if (monkey.getMonkeyImageView().getX() > start_pos) {
+                first.setX(first.getX() - 2);
+                second.setX(second.getX() - 2);
+                monkey.getMonkeyImageView().setX(monkey.getMonkeyImageView().getX() - 2);
             } else {
-                stopping_scene();
+                stopping_scene(monkey,stick,towers);
+
             }
         }));
 
@@ -40,10 +84,11 @@ public class Towers {
         moveSceneTimeline.play();
     }
 
-    public void stopping_scene()
+    public void stopping_scene(Monkey monkey, Stick stick, Towers towers)
     {
         if (moveSceneTimeline != null) {
             moveSceneTimeline.stop();
+            initTimeline(monkey,stick, towers);
         }
     }
 }

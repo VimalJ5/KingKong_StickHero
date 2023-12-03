@@ -59,7 +59,7 @@ public class PlayingController implements Initializable {
 
     private void initializeGame() {
         towersClass = new Towers();
-        monkeyCharacter = new Monkey(monkeyImageView, banana, towersClass);
+        monkeyCharacter = new Monkey(monkeyImageView, banana, towersClass,tower1,tower2);
         banana = new Banana();
         initialSetups();
 
@@ -79,22 +79,19 @@ public class PlayingController implements Initializable {
     }
 
     private void startGame(){
-        System.out.println(tower1.getX());
-        System.out.println("Game is starting bow bow bow");
         init_stickPlacement();
-        System.out.println("Stick is done");
-        monkeyCharacter.monkeyWalking(tower1,tower2,monkeyCharacter.getMonkeyImageView().getX(),monkeyCharacter);
-
+        //monkeyCharacter.monkeyWalking(monkeyCharacter, stickClass, towersClass);
+        towersClass.initTimeline(monkeyCharacter,stickClass, towersClass);
     }
 
     private void initialSetups() {
         tower1.setLayoutX(0);
         tower1.setLayoutY(0);
         tower1.setX(610);
-        tower1.setY(422);
+        tower1.setY(420);
         tower1.setWidth(100);
 
-        monkeyCharacter.setPosition(629, 374);
+        monkeyCharacter.setPosition(629, 372);
         stick.setVisible(false);
 
         init_moveMonkeyAndTower();
@@ -134,22 +131,8 @@ public class PlayingController implements Initializable {
 
     private void stop_init_pos() {
         init_pos.stop();
-        createNewRectangle();
-        FadeTransition newblockFade = new FadeTransition(Duration.seconds(0.4),tower2);
-        newblockFade.setToValue(1);
-        newblockFade.play();
     }
 
-    private void createNewRectangle() {
-        Random rand = new Random();
-        double randomX = 95 + rand.nextDouble() * (720);
-        double randomWidth = 80 + rand.nextDouble() * (165);
-
-        tower2 = towersClass.createTower(350, randomWidth, randomX, 420);
-        tower2.setOpacity(0);
-
-        gamePane.getChildren().add(tower2);
-    }
 
     public void endSceneShift(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -159,6 +142,7 @@ public class PlayingController implements Initializable {
 
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
+        stage.setResizable(false);
         stage.show();
     }
 }

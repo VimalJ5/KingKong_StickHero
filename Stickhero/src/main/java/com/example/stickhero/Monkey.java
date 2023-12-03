@@ -19,16 +19,22 @@ public class Monkey {
     private double frame_changer;
     private List<Image> walkingFrame;
 
+    private Rectangle currentTower;
+
+    private Rectangle nextTower;
+
     private final int width = 50;
     private final int height = 50;
 
-    public Monkey(ImageView monkeyImageView, Banana banana, Towers tower) {
+    public Monkey(ImageView monkeyImageView, Banana banana, Towers tower, Rectangle currentTower, Rectangle nextTower) {
         this.isUpside = false;
         this.monkeyImageView = monkeyImageView;
         this.banana = banana;
         this.tower = tower;
         this.frame_changer = 0.0;
         this.walkingFrame = new ArrayList<>();
+        this.currentTower = currentTower;
+        this.nextTower = nextTower;
 
         for (int i = 1; i <= 8; i++) {
             String imagePath = "monke" + i + ".png";
@@ -42,10 +48,10 @@ public class Monkey {
         monkeyImageView.setY(y);
     }
 
-    public void monkeyWalking(Rectangle starting, Rectangle ending,double start_pos, Monkey monkey)
+    public void monkeyWalking(Monkey monkey,Stick stick, Towers towers)
     {
         monkeywalk = new Timeline(new KeyFrame(Duration.seconds(0.02), event -> {
-            if(this.monkeyImageView.getX() < ending.getX() + this.monkeyImageView.getFitWidth()){
+            if(this.monkeyImageView.getX() < nextTower.getX() + this.monkeyImageView.getFitWidth()){
                 frame_changer += 0.25 ;
                 if((int)frame_changer == 8){
                     this.monkeyImageView.setImage(walkingFrame.get(7));
@@ -72,8 +78,8 @@ public class Monkey {
             }
             else {
                 this.monkeyImageView.setImage(walkingFrame.get(0));
-                stopping_hero();
-                tower.moveScene(starting,ending,start_pos,monkey);
+                stopping_hero(monkey,stick,towers);
+
             }
         }));
 
@@ -81,8 +87,12 @@ public class Monkey {
         monkeywalk.play();
     }
 
-    private void stopping_hero() {
+    private void stopping_hero(Monkey monkey,Stick stick, Towers towers) {
         monkeywalk.stop();
+        Rectangle temp = this.currentTower;
+        this.currentTower = this.nextTower;
+        this.nextTower = temp;
+        tower.moveScene(monkey, stick, towers);
     }
 
     public boolean isUpside() {
@@ -117,5 +127,27 @@ public class Monkey {
         this.tower = tower;
     }
 
+    public Rectangle getCurrentTower() {
+        return currentTower;
+    }
 
+    public void setCurrentTower(Rectangle currentTower) {
+        this.currentTower = currentTower;
+    }
+
+    public Rectangle getNextTower() {
+        return nextTower;
+    }
+
+    public void setNextTower(Rectangle nextTower) {
+        this.nextTower = nextTower;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }
