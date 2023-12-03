@@ -42,7 +42,7 @@ public class Monkey {
         monkeyImageView.setY(y);
     }
 
-    public void monkeyWalking(Rectangle starting, Rectangle ending)
+    public void monkeyWalking(Rectangle starting, Rectangle ending,double start_pos, Monkey monkey)
     {
         monkeywalk = new Timeline(new KeyFrame(Duration.seconds(0.02), event -> {
             if(this.monkeyImageView.getX() < ending.getX() + this.monkeyImageView.getFitWidth()){
@@ -73,6 +73,7 @@ public class Monkey {
             else {
                 this.monkeyImageView.setImage(walkingFrame.get(0));
                 stopping_hero();
+                tower.moveScene(starting,ending,start_pos,monkey);
             }
         }));
 

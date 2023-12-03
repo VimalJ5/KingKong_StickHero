@@ -18,11 +18,17 @@ public class Towers {
         return tower;
     }
 
+    public void initialTimeline(Rectangle starting, Rectangle Ending, double start_pos, Monkey monkey)
+    {
+
+    }
+
+
     public void moveScene(Rectangle first, Rectangle second, double start_pos, Monkey monkey) {
 
-        Timeline move_scene = new Timeline(new KeyFrame(Duration.seconds(0.005), event -> {
+        moveSceneTimeline = new Timeline(new KeyFrame(Duration.seconds(0.005), event -> {
             if (second.getX() > start_pos) {
-                first.setLayoutY(first.getLayoutY() - 1);
+                first.setX(first.getX() - 1);
                 second.setX(second.getX() - 1);
                 monkey.getMonkeyImageView().setX(monkey.getMonkeyImageView().getX() - 1);
             } else {

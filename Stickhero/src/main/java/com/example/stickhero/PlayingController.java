@@ -48,6 +48,7 @@ public class PlayingController implements Initializable {
     private Monkey monkeyCharacter;
     private Towers towersClass;
     private Banana banana;
+    private Stick stickClass;
 
     private Timeline init_pos;
 
@@ -71,20 +72,18 @@ public class PlayingController implements Initializable {
             }
 
             Platform.runLater(() -> {
-
                 startGame();
             });
         });
-
         gameThread.start();
     }
 
     private void startGame(){
         System.out.println(tower1.getX());
         System.out.println("Game is starting bow bow bow");
-        stickPlacement();
+        init_stickPlacement();
         System.out.println("Stick is done");
-        monkeyCharacter.monkeyWalking(tower1,tower2);
+        monkeyCharacter.monkeyWalking(tower1,tower2,monkeyCharacter.getMonkeyImageView().getX(),monkeyCharacter);
 
     }
 
@@ -101,7 +100,7 @@ public class PlayingController implements Initializable {
         init_moveMonkeyAndTower();
     }
 
-    private void stickPlacement() {
+    private void init_stickPlacement() {
         Rectangle stickRectangle = new Rectangle();
 
         stickRectangle.setWidth(5);
@@ -117,6 +116,7 @@ public class PlayingController implements Initializable {
         stickRectangle.setY(stickY);
 
         gamePane.getChildren().add(stickRectangle);
+        stickClass = new Stick(stickRectangle);
     }
 
     private void init_moveMonkeyAndTower() {
