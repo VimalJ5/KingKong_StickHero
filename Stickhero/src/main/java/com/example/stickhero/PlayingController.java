@@ -24,6 +24,8 @@ import java.util.ResourceBundle;
 
 public class PlayingController implements Initializable {
 
+    private final int tower_height = 350;
+
     private Stage stage;
     private Scene gameScene;
     private Parent root;
@@ -44,6 +46,8 @@ public class PlayingController implements Initializable {
 
     @FXML
     private Rectangle tower2;
+    @FXML
+    private ImageView bananaImageView;
 
     private Monkey monkeyCharacter;
     private Towers towersClass;
@@ -58,9 +62,10 @@ public class PlayingController implements Initializable {
     }
 
     private void initializeGame() {
+
         towersClass = new Towers();
         monkeyCharacter = new Monkey(monkeyImageView, banana, towersClass,tower1,tower2);
-        banana = new Banana();
+        banana = new Banana(bananaImageView);
         initialSetups();
 
         Thread gameThread = new Thread(() -> {
@@ -81,17 +86,21 @@ public class PlayingController implements Initializable {
     private void startGame(){
         init_stickPlacement();
         //monkeyCharacter.monkeyWalking(monkeyCharacter, stickClass, towersClass);
-        towersClass.initTimeline(monkeyCharacter,stickClass, towersClass);
+        towersClass.initTimeline(monkeyCharacter,stickClass, towersClass, banana);
     }
 
     private void initialSetups() {
+        bananaImageView.setVisible(false);
+        tower1.setHeight(tower_height);
         tower1.setLayoutX(0);
         tower1.setLayoutY(0);
         tower1.setX(610);
-        tower1.setY(420);
+        tower1.setY(470);
+        //tower1.setY(gamePane.getPrefHeight() - tower_height);
         tower1.setWidth(100);
 
-        monkeyCharacter.setPosition(629, 372);
+        monkeyCharacter.setPosition(629, 422);
+        //monkeyCharacter.setPosition(629, gamePane.getPrefHeight() - tower_height - 50);
         stick.setVisible(false);
 
         init_moveMonkeyAndTower();

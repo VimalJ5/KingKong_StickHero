@@ -22,23 +22,24 @@ public class Towers {
         return tower;
     }
 
-    public void setTowerpos(Rectangle tower)
+    public void setTowerpos(Rectangle tower, Monkey monkey)
     {
-        double randomX = 95 + rand.nextDouble() * (720);
-        double randomWidth = 80 + rand.nextDouble() * (165);
+        double randomX = 50 + rand.nextInt(1000);
+        double randomWidth = 50 + monkey.getMonkeyImageView().getFitWidth() + rand.nextInt(150);
 
         tower.setWidth(randomWidth);
-        tower.setHeight(350);
+        tower.setHeight(300);
         tower.setX(randomX);
-        tower.setY(420);
+        tower.setY(470);
         tower.setOpacity(0);
     }
 
-    public void initTimeline(Monkey monkey, Stick stick, Towers towers)
+    public void initTimeline(Monkey monkey, Stick stick, Towers towers,Banana banana)
     {
+        System.out.println(monkey.getCurrentTower().getX());
         initalTimeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
             Rectangle tower = monkey.getNextTower();
-            setTowerpos(tower);
+            setTowerpos(tower,monkey);
 
             FadeTransition newblockFade = new FadeTransition(Duration.seconds(0.4), tower);
             newblockFade.setToValue(1);
@@ -52,7 +53,7 @@ public class Towers {
 
             parallelTransition.play();
             parallelTransition.setOnFinished(event2 -> {
-                stop_initTimeline(monkey,stick,towers);
+                stop_initTimeline(monkey,stick,towers, banana);
             } );
         }));
         initalTimeline.setCycleCount(1);
@@ -60,11 +61,11 @@ public class Towers {
 
     }
 
-    public void stop_initTimeline(Monkey monkey, Stick stick, Towers towers){
+    public void stop_initTimeline(Monkey monkey, Stick stick, Towers towers, Banana banana){
         initalTimeline.stop();
-        stick.StickGrowTimeline(monkey, stick, towers);
+        stick.StickGrowTimeline(monkey, stick, towers, banana);
     }
-    public void moveScene( Monkey monkey, Stick stick, Towers towers) {
+    public void moveScene( Monkey monkey, Stick stick, Towers towers, Banana banana) {
         Rectangle first = monkey.getCurrentTower();
         Rectangle second = monkey.getNextTower();
         double start_pos = 20;
@@ -75,7 +76,7 @@ public class Towers {
                 second.setX(second.getX() - 2);
                 monkey.getMonkeyImageView().setX(monkey.getMonkeyImageView().getX() - 2);
             } else {
-                stopping_scene(monkey,stick,towers);
+                stopping_scene(monkey,stick,towers, banana);
 
             }
         }));
@@ -84,11 +85,11 @@ public class Towers {
         moveSceneTimeline.play();
     }
 
-    public void stopping_scene(Monkey monkey, Stick stick, Towers towers)
+    public void stopping_scene(Monkey monkey, Stick stick, Towers towers, Banana banana)
     {
         if (moveSceneTimeline != null) {
             moveSceneTimeline.stop();
-            initTimeline(monkey,stick, towers);
+            initTimeline(monkey,stick, towers, banana);
         }
     }
 }

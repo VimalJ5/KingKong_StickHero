@@ -1,3 +1,5 @@
+//Note there is an error I've to take care of. Slight adjustment of the 2nd tower. The 2nd tower might overlap as of now.
+
 package com.example.stickhero;
 
 import javafx.application.Application;
@@ -17,7 +19,7 @@ public class MainApplication extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
-        stage.setTitle("GorillaHero");
+        stage.setTitle("Ninja Harambe");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

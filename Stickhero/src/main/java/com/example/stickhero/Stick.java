@@ -13,23 +13,24 @@ public class Stick {
     private double Y;
 
     private Timeline stickgrowing;
+    private Timeline stickfalling;
 
     public Stick(Rectangle stick)
     {
         this.stick = stick;
     }
 
-    public void StickGrowTimeline(Monkey monkey, Stick stick, Towers towers )
+    public void StickGrowTimeline(Monkey monkey, Stick stick, Towers towers, Banana banana )
     {
         final boolean[] check = {true};
-        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.005), event -> {
+        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
 
             if(check[0])
             {
                 System.out.println("My peee pee goes boing boing");
                 check[0] = false;
             } else {
-                stop_growth(monkey,stick,towers);
+                stop_growth(monkey,stick,towers, banana);
             }
 
         }));
@@ -37,10 +38,33 @@ public class Stick {
         stickgrowing.play();
     }
 
-    public void stop_growth(Monkey monkey, Stick stick, Towers towers )
+    private void stop_growth(Monkey monkey, Stick stick, Towers towers, Banana banana )
     {
         stickgrowing.stop();
-        monkey.monkeyWalking(monkey, stick, towers);
+        stickFalling(monkey,stick,towers, banana);
+    }
+
+    public void stickFalling(Monkey monkey, Stick stick, Towers towers, Banana banana)
+    {
+        final boolean[] check = {true};
+        stickfalling = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+
+            if(check[0])
+            {
+                System.out.println("My peee pee goes lands on the tower");
+                check[0] = false;
+            } else {
+                stop_fall(monkey,stick,towers, banana);
+            }
+
+        }));
+        stickfalling.setCycleCount(Timeline.INDEFINITE);
+        stickfalling.play();
+    }
+
+    private void stop_fall(Monkey monkey, Stick stick, Towers towers, Banana banana) {
+        stickfalling.stop();
+        monkey.monkeypunching(monkey, stick, towers, banana);
     }
 
 

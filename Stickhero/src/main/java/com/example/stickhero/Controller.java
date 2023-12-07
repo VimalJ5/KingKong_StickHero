@@ -46,13 +46,14 @@ public class Controller implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
+        //FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene - Copy.fxml"));
         Parent root = loader.load();
 
         PlayingController playingController = loader.getController();
 
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.show();
     }
 

@@ -16,8 +16,10 @@ public class Monkey {
     private ImageView monkeyImageView;
     private Towers tower;
     private Timeline monkeywalk;
+    private Timeline monkeypunch;
     private double frame_changer;
     private List<Image> walkingFrame;
+    private List<Image> punchingFrame;
 
     private Rectangle currentTower;
 
@@ -25,6 +27,7 @@ public class Monkey {
 
     private final int width = 50;
     private final int height = 50;
+    private int count;
 
     public Monkey(ImageView monkeyImageView, Banana banana, Towers tower, Rectangle currentTower, Rectangle nextTower) {
         this.isUpside = false;
@@ -33,13 +36,21 @@ public class Monkey {
         this.tower = tower;
         this.frame_changer = 0.0;
         this.walkingFrame = new ArrayList<>();
+        this.punchingFrame = new ArrayList<>();
         this.currentTower = currentTower;
         this.nextTower = nextTower;
+        this.count = 0;
 
         for (int i = 1; i <= 8; i++) {
             String imagePath = "monke" + i + ".png";
             Image frame = new Image(getClass().getResourceAsStream(imagePath));
             walkingFrame.add(frame);
+        }
+
+        for (int i = 1; i <= 6; i++) {
+            String imagePath = "Punch" + i + ".png";
+            Image frame = new Image(getClass().getResourceAsStream(imagePath));
+            punchingFrame.add(frame);
         }
     }
 
@@ -48,10 +59,36 @@ public class Monkey {
         monkeyImageView.setY(y);
     }
 
-    public void monkeyWalking(Monkey monkey,Stick stick, Towers towers)
+    public void monkeypunching(Monkey monkey, Stick stick, Towers towers, Banana banana)
+    {
+        monkeypunch = new Timeline(new KeyFrame(Duration.seconds(0.08), event -> {
+            if(count < 6){
+                this.monkeyImageView.setImage(punchingFrame.get(count));
+                count ++;
+            }
+            else {
+                this.monkeyImageView.setImage(walkingFrame.get(0));
+                stopping_punch(monkey,stick,towers, banana);
+
+            }
+        }));
+
+        monkeypunch.setCycleCount(Timeline.INDEFINITE);
+        monkeypunch.play();
+    }
+
+    private void stopping_punch(Monkey monkey,Stick stick, Towers towers, Banana banana)
+    {
+        monkeypunch.stop();
+        banana.spawn_bananas(monkey,stick,towers);
+        count = 0;
+        monkey.monkeyWalking(monkey, stick,towers, banana);
+    }
+
+    public void monkeyWalking(Monkey monkey,Stick stick, Towers towers, Banana banana)
     {
         monkeywalk = new Timeline(new KeyFrame(Duration.seconds(0.02), event -> {
-            if(this.monkeyImageView.getX() < nextTower.getX() + this.monkeyImageView.getFitWidth()){
+            if(this.monkeyImageView.getX() < nextTower.getX() + nextTower.getWidth() - this.monkeyImageView.getFitWidth() - 10){
                 frame_changer += 0.25 ;
                 if((int)frame_changer == 8){
                     this.monkeyImageView.setImage(walkingFrame.get(7));
@@ -78,7 +115,7 @@ public class Monkey {
             }
             else {
                 this.monkeyImageView.setImage(walkingFrame.get(0));
-                stopping_hero(monkey,stick,towers);
+                stopping_hero(monkey,stick,towers, banana);
 
             }
         }));
@@ -87,12 +124,17 @@ public class Monkey {
         monkeywalk.play();
     }
 
-    private void stopping_hero(Monkey monkey,Stick stick, Towers towers) {
+    private void stopping_hero(Monkey monkey,Stick stick, Towers towers, Banana banana) {
         monkeywalk.stop();
+
+        frame_changer = 0;
+        banana.getBananaImageView().setVisible(false);
+
         Rectangle temp = this.currentTower;
         this.currentTower = this.nextTower;
         this.nextTower = temp;
-        tower.moveScene(monkey, stick, towers);
+
+        tower.moveScene(monkey, stick, towers, banana);
     }
 
     public boolean isUpside() {
