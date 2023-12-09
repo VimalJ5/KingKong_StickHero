@@ -2,6 +2,9 @@ package com.example.stickhero;
 
 import javafx.animation.*;
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
@@ -10,11 +13,17 @@ import javafx.util.Duration;
 import java.util.Random;
 
 public class Towers {
+    AnchorPane gamepane;
+    Stage stage;
+    Scene scene;
     ActionEvent event;
     private Timeline moveSceneTimeline;
     private Timeline initalTimeline;
     private
     Random rand = new Random();
+    public Towers(Stage stage){
+        this.stage=stage;
+    }
     public Rectangle createTower(double height, double width, double x, double y) {
         Rectangle tower = new Rectangle();
         tower.setWidth(width);
@@ -36,7 +45,7 @@ public class Towers {
         tower.setOpacity(0);
     }
 
-    public void initTimeline(Monkey monkey, Stick stick, Towers towers,Banana banana, Stage stage)
+    public void initTimeline(Monkey monkey, Stick stick, Towers towers,Banana banana)
     {
         System.out.println(monkey.getCurrentTower().getX());
         initalTimeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
@@ -55,7 +64,7 @@ public class Towers {
 
             parallelTransition.play();
             parallelTransition.setOnFinished(event2 -> {
-                stop_initTimeline(monkey,stick,towers, banana, stage);
+                stop_initTimeline(monkey,stick,towers, banana);
             } );
         }));
         initalTimeline.setCycleCount(1);
@@ -63,13 +72,14 @@ public class Towers {
 
     }
 
-    public void stop_initTimeline(Monkey monkey, Stick stick, Towers towers, Banana banana, Stage stage){
+    public void stop_initTimeline(Monkey monkey, Stick stick, Towers towers, Banana banana){
         initalTimeline.stop();
-        stick.StickGrowTimeline(monkey, stick, towers, banana, stage);
+        stick.StickGrowTimeline(monkey,stick,towers,banana);
+
     }
 
     //After the monkey crosses this function moves everything back to starting position until stop scene is called
-    public void moveScene( Monkey monkey, Stick stick, Towers towers, Banana banana, Stage stage) {
+    public void moveScene( Monkey monkey, Stick stick, Towers towers, Banana banana) {
         Rectangle first = monkey.getCurrentTower();
         Rectangle second = monkey.getNextTower();
         double start_pos = 20;
@@ -81,7 +91,7 @@ public class Towers {
                 monkey.getMonkeyImageView().setX(monkey.getMonkeyImageView().getX() - 2);
                 stick.getStick().setY(stick.getStick().getY()+2);
             } else {
-                stopping_scene(monkey,stick,towers, banana, stage);
+                stopping_scene(monkey,stick,towers, banana);
 
 
 
@@ -104,11 +114,11 @@ public class Towers {
     }
 
     //IF condition is fullfilled this stops the scene from moving more
-    public void stopping_scene(Monkey monkey, Stick stick, Towers towers, Banana banana, Stage stage)
+    public void stopping_scene(Monkey monkey, Stick stick, Towers towers, Banana banana)
     {
         if (moveSceneTimeline != null) {
             moveSceneTimeline.stop();
-            initTimeline(monkey,stick, towers, banana, stage);
+            initTimeline(monkey,stick, towers, banana);
         }
     }
 }

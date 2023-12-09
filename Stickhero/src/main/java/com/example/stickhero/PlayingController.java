@@ -28,10 +28,15 @@ public class PlayingController implements Initializable {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+        initializeGame();
     }
 
     private Stage stage;
+
     private Scene gameScene;
+    public void setGameScene(Scene gameScene) {
+        this.gameScene = gameScene;
+    }
     private Parent root;
 
     @FXML
@@ -62,19 +67,18 @@ public class PlayingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeGame();
     }
 
     private void initializeGame() {
 
-        towersClass = new Towers();
-        monkeyCharacter = new Monkey(monkeyImageView, banana, towersClass,tower1,tower2);
+        towersClass = new Towers(stage);
+        monkeyCharacter = new Monkey(this.stage,monkeyImageView, banana, towersClass,tower1,tower2);
         banana = new Banana(bananaImageView);
         initialSetups();
 
         Thread gameThread = new Thread(() -> {
             try {
-                Thread.sleep(2550);
+                Thread.sleep(1550);
             } catch (InterruptedException e)
             {
                 e.printStackTrace();
@@ -90,7 +94,7 @@ public class PlayingController implements Initializable {
     private void startGame(){
         init_stickPlacement();
         //monkeyCharacter.monkeyWalking(monkeyCharacter, stickClass, towersClass);
-        towersClass.initTimeline(monkeyCharacter,stickClass, towersClass, banana, stage);
+        towersClass.initTimeline(monkeyCharacter,stickClass, towersClass, banana);
     }
 
     private void initialSetups() {
@@ -126,7 +130,7 @@ public class PlayingController implements Initializable {
         stickRectangle.setY(stickY);
 
         gamePane.getChildren().add(stickRectangle);
-        stickClass = new Stick(stickRectangle);
+        stickClass = new Stick(stickRectangle,this.gamePane, stage);
     }
 
     private void init_moveMonkeyAndTower() {
@@ -145,7 +149,6 @@ public class PlayingController implements Initializable {
     private void stop_init_pos() {
         init_pos.stop();
     }
-
 
     public void endSceneShift(ActionEvent event) throws IOException {
 

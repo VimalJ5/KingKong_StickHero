@@ -32,14 +32,18 @@ public class EndgameController {
     }
 
     public void gameSceneShift(ActionEvent event) throws IOException {
-        Stage stage;
-        Scene gameScene;
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
+        //FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene - Copy.fxml"));
         Parent root = loader.load();
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        gameScene = new Scene(root);
+
+        PlayingController playingController = loader.getController();
+        playingController.setStage(stage);
+
+        Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
+        stage.setResizable(true);
         stage.show();
 
     }

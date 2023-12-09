@@ -23,6 +23,11 @@ public class Controller implements Initializable {
 
 
     private Stage stage;
+
+    public void setGameScene(Scene gameScene) {
+        this.gameScene = gameScene;
+    }
+
     private Scene gameScene;
     private Parent root;
 
@@ -53,6 +58,7 @@ public class Controller implements Initializable {
 
         PlayingController playingController = loader.getController();
         playingController.setStage(stage);
+        playingController.setGameScene(gameScene);
 
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);

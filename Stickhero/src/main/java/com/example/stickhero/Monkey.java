@@ -37,10 +37,9 @@ public class Monkey {
     private int count;
     private Stage stage;
 
-    public Monkey(ImageView monkeyImageView, Banana banana, Towers tower, Rectangle currentTower, Rectangle nextTower) {
+    public Monkey(Stage stage,ImageView monkeyImageView, Banana banana, Towers tower, Rectangle currentTower, Rectangle nextTower) {
         this.isUpside = false;
-        //this.stage=stage;
-        System.out.println("Setting Stage");
+        this.stage=stage;
         this.monkeyImageView = monkeyImageView;
         this.banana = banana;
         this.tower = tower;
@@ -69,7 +68,7 @@ public class Monkey {
         monkeyImageView.setY(y);
     }
 
-    public void monkeypunching(Monkey monkey, Stick stick, Towers towers, Banana banana, Stage stage)
+    public void monkeypunching(Monkey monkey, Stick stick, Towers towers, Banana banana)
     {
         monkeypunch = new Timeline(new KeyFrame(Duration.seconds(0.08), event -> {
             if(count < 6){
@@ -78,7 +77,7 @@ public class Monkey {
             }
             else {
                 this.monkeyImageView.setImage(walkingFrame.get(0));
-                stopping_punch(monkey,stick,towers, banana, stage);
+                stopping_punch(monkey,stick,towers, banana);
 
             }
         }));
@@ -87,15 +86,15 @@ public class Monkey {
         monkeypunch.play();
     }
 
-    private void stopping_punch(Monkey monkey,Stick stick, Towers towers, Banana banana, Stage stage)
+    private void stopping_punch(Monkey monkey,Stick stick, Towers towers, Banana banana)
     {
         monkeypunch.stop();
         banana.spawn_bananas(monkey,stick,towers);
         count = 0;
-        monkey.monkeyWalking(monkey, stick,towers, banana, stage);
+        monkey.monkeyWalking(monkey, stick,towers, banana);
     }
 
-    public void monkeyWalking(Monkey monkey,Stick stick, Towers towers, Banana banana, Stage stage)
+    public void monkeyWalking(Monkey monkey,Stick stick, Towers towers, Banana banana)
     {
         boolean fall;
         double distance=0;
@@ -140,7 +139,7 @@ public class Monkey {
             }
             else {
                 this.monkeyImageView.setImage(walkingFrame.get(0));
-                stopping_hero(monkey,stick,towers, banana, stage);
+                stopping_hero(monkey,stick,towers, banana);
                 if(fall){
                     FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("End.fxml"));
                     Parent root = null;
@@ -162,7 +161,7 @@ public class Monkey {
         monkeywalk.play();
     }
 
-    private void stopping_hero(Monkey monkey,Stick stick, Towers towers, Banana banana, Stage stage) {
+    private void stopping_hero(Monkey monkey,Stick stick, Towers towers, Banana banana) {
         monkeywalk.stop();
 
         frame_changer = 0;
@@ -172,7 +171,7 @@ public class Monkey {
         this.currentTower = this.nextTower;
         this.nextTower = temp;
 
-        tower.moveScene(monkey, stick, towers, banana, stage);
+        tower.moveScene(monkey, stick, towers, banana);
 
     }
 

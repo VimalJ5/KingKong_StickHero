@@ -17,13 +17,14 @@ public class MainApplication extends Application {
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource( "Homepage.fxml"));
         Parent root = loader.load();
-
-
+        Controller controller=loader.getController();
         Scene scene = new Scene(root);
         stage.setTitle("Ninja Harambe");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
+
 
 
     }

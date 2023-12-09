@@ -1,57 +1,69 @@
 package com.example.stickhero;
-
+import javafx.scene.input.KeyCode;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Stick {
     private Stage stage;
+    private AnchorPane gamepane;
     private double height;
     private double width;
     private Rectangle stick;
     private double X;
     private double Y;
-
     private Timeline stickgrowing;
     private Timeline stickfalling;
 
-    public Stick(Rectangle stick)
+    public Stick(Rectangle stick, AnchorPane gamepane, Stage stage)
     {
+        this.gamepane=gamepane;
         this.stick = stick;
+        this.stage = stage;
+
     }
 
-    public void StickGrowTimeline(Monkey monkey, Stick stick, Towers towers, Banana banana,Stage stage)
+    public void StickGrowTimeline(Monkey monkey, Stick stick, Towers towers, Banana banana)
     {
-
-        double max=500;
+        AtomicBoolean cond = new AtomicBoolean(true);
         System.out.println("Start grow");
-        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.005), event -> {
-
-            if(stick.getStick().getHeight()<max)
+        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+            if(cond.get() == true)
             {
-
-
-                stick.getStick().setY(stick.getStick().getY()-2);
-                stick.getStick().setHeight(stick.getStick().getHeight()+2);
-
-
+                stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, eventpress -> {
+                    if(eventpress.getCode().equals(KeyCode.UP)) {
+                        stick.getStick().setY((stick.getStick().getY() - 0.5));
+                        stick.getStick().setHeight(stick.getStick().getHeight() + 0.5);
+                    }
+                    else{
+                        cond.set(false);
+                    }
+                });
             } else {
-                stop_growth(monkey,stick,towers, banana, stage);
+                stop_growth(monkey, stick, towers, banana);
             }
-
         }));
+
         stickgrowing.setCycleCount(Timeline.INDEFINITE);
         stickgrowing.play();
+
+
+//        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
+//        PlayingController playingController = loader.getController();
     }
 
-    private void stop_growth(Monkey monkey, Stick stick, Towers towers, Banana banana, Stage stage )  {
+    private void stop_growth(Monkey monkey, Stick stick, Towers towers, Banana banana)  {
         stickgrowing.stop();
         System.out.println("Stop grow");
         stickFalling(monkey,stick,towers, banana);
-        monkey.monkeypunching(monkey, stick, towers, banana, stage);
+        monkey.monkeypunching(monkey, stick, towers, banana);
 
     }
 
