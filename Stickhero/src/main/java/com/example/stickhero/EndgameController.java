@@ -1,10 +1,13 @@
 package com.example.stickhero;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,7 +24,12 @@ public class EndgameController {
 
     private Monkey monke;
 
-    public void menuSceneShift(ActionEvent event) throws IOException {
+    @FXML
+    private Rectangle tower1;
+    @FXML
+    private Rectangle tower2;
+
+    public void menuSceneShift(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("Homepage.fxml"));
         Parent root = loader.load();
 
@@ -35,7 +43,6 @@ public class EndgameController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
-        //FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene - Copy.fxml"));
         Parent root = loader.load();
 
         PlayingController playingController = loader.getController();
@@ -45,8 +52,10 @@ public class EndgameController {
         stage.setScene(gameScene);
         stage.setResizable(true);
         stage.show();
-
     }
+
+
+
 
     public void Revive(ActionEvent event) throws IOException{
         System.out.println("This is for the revive button");
