@@ -108,7 +108,6 @@ public class PlayingController implements Initializable {
 
     private void startGame(){
         init_stickPlacement();
-        //monkeyCharacter.monkeyWalking(monkeyCharacter, stickClass, towersClass);
         towersClass.initTimeline(monkeyCharacter,stickClass, towersClass, banana);
     }
 
@@ -171,10 +170,14 @@ public class PlayingController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("End.fxml"));
         Parent root = loader.load();
+
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
         stage.setResizable(false);
         stage.show();
+
+
+
 
     }
 }

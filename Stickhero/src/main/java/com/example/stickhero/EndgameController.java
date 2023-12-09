@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -26,6 +27,15 @@ public class EndgameController implements Initializable {
     }
 
     private Monkey monkey;
+    public void setMonkey(Monkey monkey){
+        this.monkey = monkey;
+        this.score.setText(Integer.toString(monkey.getScore()));
+        if(Monkey.getBest_Score() < monkey.getScore())
+        {
+            Monkey.setBest_Score(monkey.getScore());
+        }
+        this.best_score.setText(Integer.toString(Monkey.getBest_Score()));
+    }
 
     private Stage stage;
     private Scene gameScene;
@@ -36,6 +46,13 @@ public class EndgameController implements Initializable {
     private Rectangle tower1;
     @FXML
     private Rectangle tower2;
+
+    @FXML
+    private Text score;
+    @FXML
+    private Text banana_score;
+    @FXML
+    private Text best_score;
 
     @FXML
     private ImageView monkeyImageView;
@@ -50,6 +67,14 @@ public class EndgameController implements Initializable {
         endmediaPlayer.play();
     }
 
+    public void song_play()
+    {
+        File mediafile=new File("src/main/resources/com/example/stickhero/end.mp3");
+        Media start=new Media(mediafile.toURI().toString());
+        endmediaPlayer=new MediaPlayer(start);
+        endmediaPlayer.play();
+    }
+
     public void revive(MouseEvent event) throws IOException {
 
     }
@@ -57,7 +82,6 @@ public class EndgameController implements Initializable {
 
     public void menuSceneShift(MouseEvent event) throws IOException {
         endmediaPlayer.stop();
-
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("Homepage.fxml"));
         Parent root = loader.load();

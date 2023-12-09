@@ -93,8 +93,6 @@ public class Towers {
             } else {
                 stopping_scene(monkey,stick,towers, banana);
 
-
-
                 Rotate rotate=new Rotate();
                 stick.getStick().setHeight(5);
                 rotate.setAngle(270);
@@ -103,8 +101,6 @@ public class Towers {
                 stick.getStick().getTransforms().add(rotate);
                 stick.getStick().setX(first.getWidth()+first.getX()-stick.getStick().getWidth());
                 stick.getStick().setY(first.getY()-stick.getStick().getHeight());
-
-
 
             }
         }));
