@@ -11,6 +11,10 @@ import java.io.IOException;
 
 public class EndgameController {
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     private Stage stage;
     private Scene gameScene;
     private Parent root;
@@ -33,11 +37,14 @@ public class EndgameController {
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
         Parent root = loader.load();
-
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         gameScene = new Scene(root);
         stage.setScene(gameScene);
         stage.show();
 
+    }
+
+    public void Revive(ActionEvent event) throws IOException{
+        System.out.println("This is for the revive button");
     }
 }

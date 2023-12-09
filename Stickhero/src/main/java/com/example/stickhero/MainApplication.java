@@ -15,15 +15,19 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("Homepage.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource( "Homepage.fxml"));
         Parent root = loader.load();
+
 
         Scene scene = new Scene(root);
         stage.setTitle("Ninja Harambe");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
+
     }
+
 
     public static void main(String[] args) {
         launch(args);

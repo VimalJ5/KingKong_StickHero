@@ -26,6 +26,10 @@ public class PlayingController implements Initializable {
 
     private final int tower_height = 350;
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     private Stage stage;
     private Scene gameScene;
     private Parent root;
@@ -86,7 +90,7 @@ public class PlayingController implements Initializable {
     private void startGame(){
         init_stickPlacement();
         //monkeyCharacter.monkeyWalking(monkeyCharacter, stickClass, towersClass);
-        towersClass.initTimeline(monkeyCharacter,stickClass, towersClass, banana);
+        towersClass.initTimeline(monkeyCharacter,stickClass, towersClass, banana, stage);
     }
 
     private void initialSetups() {
@@ -144,14 +148,14 @@ public class PlayingController implements Initializable {
 
 
     public void endSceneShift(ActionEvent event) throws IOException {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("End.fxml"));
         Parent root = loader.load();
-
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
         stage.setResizable(false);
         stage.show();
+
     }
 }

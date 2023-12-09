@@ -20,6 +20,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+
+
     private Stage stage;
     private Scene gameScene;
     private Parent root;
@@ -50,11 +52,13 @@ public class Controller implements Initializable {
         Parent root = loader.load();
 
         PlayingController playingController = loader.getController();
+        playingController.setStage(stage);
 
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
         stage.setResizable(true);
         stage.show();
+
     }
 
     @Override
