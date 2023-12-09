@@ -4,11 +4,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Stick {
@@ -34,7 +37,11 @@ public class Stick {
     {
         AtomicBoolean cond = new AtomicBoolean(true);
         System.out.println("Start grow");
-        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.015), event -> {
+        File mediafile=new File("src/main/resources/com/example/stickhero/growth.mp3");
+        Media start=new Media(mediafile.toURI().toString());
+        MediaPlayer mediaPlayer=new MediaPlayer(start);
+        mediaPlayer.play();
+        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.008), event -> {
             if(cond.get())
             {
                 stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, eventpress -> {
@@ -47,6 +54,7 @@ public class Stick {
                     cond.set(false);
                 });
             } else {
+                mediaPlayer.stop();
                 stop_growth(monkey, stick, towers, banana);
             }
         }));
@@ -69,6 +77,10 @@ public class Stick {
         rotate.setPivotX(stick.getStick().getX());
         rotate.setPivotY(465);
         final double[] angle = {0};
+        File mediafile=new File("src/main/resources/com/example/stickhero/whoosh.mp3");
+        Media start=new Media(mediafile.toURI().toString());
+        MediaPlayer mediaPlayer=new MediaPlayer(start);
+        mediaPlayer.play();
 
         stickfalling = new Timeline(new KeyFrame(Duration.seconds(0.009), event -> {
 
@@ -78,6 +90,7 @@ public class Stick {
                 angle[0]++;
             } else {
                 stop_fall(monkey,stick,towers, banana);
+                mediaPlayer.stop();
             }
 
         }));

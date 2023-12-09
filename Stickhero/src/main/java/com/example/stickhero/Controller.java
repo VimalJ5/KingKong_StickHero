@@ -10,12 +10,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.media.Media;
 
 public class Controller implements Initializable {
     private Stage stage;
@@ -35,7 +38,7 @@ public class Controller implements Initializable {
 
     @FXML
     private Button playButton;
-
+    private MediaPlayer startmediaPlayer;
     public void startPosition() {
         tower1.setX(610);
         tower1.setY(470);
@@ -47,7 +50,7 @@ public class Controller implements Initializable {
 
     public void gameSceneShift(MouseEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
+        startmediaPlayer.stop();;
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
         //FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene - Copy.fxml"));
         Parent root = loader.load();
@@ -61,9 +64,14 @@ public class Controller implements Initializable {
         stage.setResizable(true);
         stage.show();
 
+
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startPosition();
+        File mediafile=new File("src/main/resources/com/example/stickhero/start.mp3");
+        Media start=new Media(mediafile.toURI().toString());
+        startmediaPlayer=new MediaPlayer(start);
+        startmediaPlayer.play();
     }
 }
