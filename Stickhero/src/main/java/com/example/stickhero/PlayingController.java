@@ -107,7 +107,7 @@ public class PlayingController implements Initializable {
         //tower1.setY(gamePane.getPrefHeight() - tower_height);
         tower1.setWidth(100);
 
-        monkeyCharacter.setPosition(629, 422);
+        monkeyCharacter.setPosition(monkeyCharacter.getCurrentTower().getX() + monkeyCharacter.getCurrentTower().getWidth() - monkeyCharacter.getMonkeyImageView().getFitWidth() - stick.getWidth(),419);
         //monkeyCharacter.setPosition(629, gamePane.getPrefHeight() - tower_height - 50);
         stick.setVisible(false);
 

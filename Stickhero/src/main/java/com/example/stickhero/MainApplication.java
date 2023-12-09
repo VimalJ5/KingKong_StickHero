@@ -1,4 +1,4 @@
-//Note there is an error I've to take care of. Slight adjustment of the 2nd tower. The 2nd tower might overlap as of now.
+//Note there is an error I've to take care of. S light adjustment of the 2nd tower. The 2nd tower might overlap as of now.
 
 package com.example.stickhero;
 
@@ -23,10 +23,6 @@ public class MainApplication extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-
-
-
-
     }
 
 

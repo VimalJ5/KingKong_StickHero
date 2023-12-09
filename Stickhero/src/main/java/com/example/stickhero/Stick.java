@@ -34,17 +34,17 @@ public class Stick {
     {
         AtomicBoolean cond = new AtomicBoolean(true);
         System.out.println("Start grow");
-        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
-            if(cond.get() == true)
+        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.015), event -> {
+            if(cond.get())
             {
                 stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, eventpress -> {
                     if(eventpress.getCode().equals(KeyCode.UP)) {
-                        stick.getStick().setY((stick.getStick().getY() - 0.5));
-                        stick.getStick().setHeight(stick.getStick().getHeight() + 0.5);
+                        stick.getStick().setY((stick.getStick().getY() - 0.1));
+                        stick.getStick().setHeight(stick.getStick().getHeight() + 0.1);
                     }
-                    else{
-                        cond.set(false);
-                    }
+                });
+                stage.getScene().addEventFilter(KeyEvent.KEY_RELEASED,eventrelease->{
+                    cond.set(false);
                 });
             } else {
                 stop_growth(monkey, stick, towers, banana);
@@ -53,18 +53,12 @@ public class Stick {
 
         stickgrowing.setCycleCount(Timeline.INDEFINITE);
         stickgrowing.play();
-
-
-//        FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
-//        PlayingController playingController = loader.getController();
     }
 
     private void stop_growth(Monkey monkey, Stick stick, Towers towers, Banana banana)  {
         stickgrowing.stop();
         System.out.println("Stop grow");
-        stickFalling(monkey,stick,towers, banana);
         monkey.monkeypunching(monkey, stick, towers, banana);
-
     }
 
     public void stickFalling(Monkey monkey, Stick stick, Towers towers, Banana banana)
@@ -76,7 +70,7 @@ public class Stick {
         rotate.setPivotY(465);
         final double[] angle = {0};
 
-        stickfalling = new Timeline(new KeyFrame(Duration.seconds(0.02), event -> {
+        stickfalling = new Timeline(new KeyFrame(Duration.seconds(0.009), event -> {
 
             if(angle[0] <90)
             {
@@ -94,6 +88,7 @@ public class Stick {
     private void stop_fall(Monkey monkey, Stick stick, Towers towers, Banana banana) {
         System.out.println("Stop fall");
         stickfalling.stop();
+        monkey.monkeyWalking(monkey, stick,towers, banana);
 
     }
 

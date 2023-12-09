@@ -8,8 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -19,9 +18,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-
-
-
     private Stage stage;
 
     public void setGameScene(Scene gameScene) {
@@ -41,15 +37,15 @@ public class Controller implements Initializable {
     private Button playButton;
 
     public void startPosition() {
-        tower1.setLayoutX(610);
-        tower1.setLayoutY(372);
+        tower1.setX(610);
+        tower1.setY(470);
     }
 
     public void testing(ActionEvent event) {
         System.out.println("Working");
     }
 
-    public void gameSceneShift(ActionEvent event) throws IOException {
+    public void gameSceneShift(MouseEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
@@ -66,10 +62,8 @@ public class Controller implements Initializable {
         stage.show();
 
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         startPosition();
     }
 }
-

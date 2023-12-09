@@ -40,4 +40,10 @@ public class Banana {
     public void setBananaImageView(ImageView bananaImageView) {
         this.bananaImageView = bananaImageView;
     }
+
+    public void increasebanana(int i)
+    {
+        banana_count = banana_count + i;
+        System.out.println(banana_count);
+    }
 }
