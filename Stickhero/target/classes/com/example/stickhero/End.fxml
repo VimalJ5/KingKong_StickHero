@@ -123,7 +123,7 @@
                 </LinearGradient>
             </fill>
         </Rectangle>
-        <StackPane layoutX="539.0" layoutY="455.0" prefHeight="82.0" prefWidth="196.0">
+        <StackPane layoutX="539.0" layoutY="455.0" onMouseClicked="#Revive" prefHeight="82.0" prefWidth="196.0">
             <children>
                 <Rectangle arcHeight="30.0" arcWidth="30.0" fill="#3498db" height="60.0" width="160.0" />
                 <ImageView fitHeight="64.0" fitWidth="164.0">
@@ -138,7 +138,7 @@
                 </Text>
             </children>
         </StackPane>
-        <Text fill="#e5ff1e" layoutX="574.0" layoutY="565.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For 2       ?" wrappingWidth="176.0">
+        <Text fill="#e5ff1e" layoutX="574.0" layoutY="565.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For 5       ?" wrappingWidth="176.0">
             <font>
                 <Font name="Baskerville Old Face" size="30.0" />
             </font>
@@ -158,5 +158,10 @@
                 <Font name="Baskerville Old Face" size="76.0" />
             </font>
         </Text>
+      <Text fx:id="warning" fill="#e5ff1e" layoutX="474.0" layoutY="598.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NOT ENOUGH BANANAS !!!" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Baskerville Old Face" size="27.0" />
+         </font>
+      </Text>
     </children>
 </AnchorPane>

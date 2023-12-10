@@ -61,7 +61,7 @@
             <Image url="@Banana1.png" />
          </image>
       </ImageView>
-      <Text fill="WHITE" layoutX="1076.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="RIGHT" wrappingWidth="143.25">
+      <Text fx:id="banana" fill="WHITE" layoutX="1076.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="RIGHT" wrappingWidth="143.25">
          <font>
             <Font name="Baskerville Old Face" size="37.0" />
          </font>
