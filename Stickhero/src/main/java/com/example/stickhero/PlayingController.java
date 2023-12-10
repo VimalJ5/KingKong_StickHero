@@ -30,9 +30,13 @@ public class PlayingController implements Initializable {
 
     private final int tower_height = 350;
 
-    public void setStage(Stage stage) {
+    public void setStage(Stage stage, int score) {
         this.stage = stage;
         initializeGame();
+        this.init_score = score;
+        this.score.setText(Integer.toString(score));
+
+        this.banana_score.setText(Integer.toString(Banana.getBanana_count()));
     }
 
     private Stage stage;
@@ -42,6 +46,8 @@ public class PlayingController implements Initializable {
         this.gameScene = gameScene;
     }
     private Parent root;
+
+    private int init_score;
 
     @FXML
     private AnchorPane gamePane;
@@ -87,7 +93,8 @@ public class PlayingController implements Initializable {
         gamemediaPlayer.play();
 
         towersClass = new Towers(stage);
-        monkeyCharacter = new Monkey(this.stage,monkeyImageView, banana, towersClass,tower1,tower2,gamemediaPlayer, score);
+        monkeyCharacter = new Monkey(this.stage,monkeyImageView, banana, towersClass,tower1,tower2,gamemediaPlayer, score, init_score);
+
         banana = new Banana(bananaImageView, banana_score);
         initialSetups();
 
@@ -108,6 +115,7 @@ public class PlayingController implements Initializable {
 
     private void startGame(){
         init_stickPlacement();
+        //monkeyCharacter.monkeyWalking(monkeyCharacter, stickClass, towersClass);
         towersClass.initTimeline(monkeyCharacter,stickClass, towersClass, banana);
     }
 
@@ -170,14 +178,10 @@ public class PlayingController implements Initializable {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("End.fxml"));
         Parent root = loader.load();
-
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
         stage.setResizable(false);
         stage.show();
-
-
-
 
     }
 }

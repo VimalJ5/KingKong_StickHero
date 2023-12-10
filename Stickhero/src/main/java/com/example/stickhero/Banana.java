@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 import java.util.Random;
 
 public class Banana {
-    private static int banana_count;
+    private static int banana_count = 25;
     private ImageView bananaImageView;
     private Random random;
     private int chance;
@@ -23,7 +23,7 @@ public class Banana {
 
     public void spawn_bananas(Monkey monkey, Stick stick, Towers towers) {
         chance = random.nextInt(0,9);
-        if(chance<4)
+        if(chance<10)
         {
             try {
                 double iniit_value = monkey.getCurrentTower().getX() + monkey.getCurrentTower().getWidth() + 20;

@@ -1,5 +1,5 @@
 package com.example.stickhero;
-import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,8 +11,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.event.EventHandler;
-
 
 import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -27,9 +25,7 @@ public class Stick {
     private double Y;
     private Timeline stickgrowing;
     private Timeline stickfalling;
-
-    private boolean continueGrowing = true;
-
+    private boolean condition = true;
 
     public Stick(Rectangle stick, AnchorPane gamepane, Stage stage)
     {
@@ -41,32 +37,23 @@ public class Stick {
 
     public void StickGrowTimeline(Monkey monkey, Stick stick, Towers towers, Banana banana)
     {
-        //AtomicBoolean cond = new AtomicBoolean(true);
+        AtomicBoolean cond = new AtomicBoolean(true);
         System.out.println("Start grow");
         File mediafile=new File("src/main/resources/com/example/stickhero/growth.mp3");
         Media start=new Media(mediafile.toURI().toString());
         MediaPlayer mediaPlayer=new MediaPlayer(start);
         mediaPlayer.play();
-        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.008), event -> {
-            System.out.println(monkey.isIswalking());
-            if(continueGrowing && !monkey.isIswalking())
+        stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, stickgrowth);
+        stage.getScene().addEventFilter(KeyEvent.KEY_RELEASED,stickgrowthstop);
+        stickgrowing = new Timeline(new KeyFrame(Duration.seconds(0.001), event -> {
+            if(condition)
             {
-                stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, eventpress -> {
-                    if(eventpress.getCode().equals(KeyCode.UP)) {
-                        stick.getStick().setY((stick.getStick().getY() - 0.1));
-                        stick.getStick().setHeight(stick.getStick().getHeight() + 0.1);
-                    }
-                });
-                stage.getScene().addEventFilter(KeyEvent.KEY_RELEASED,eventrelease->{
-                    if(eventrelease.getCode().equals(KeyCode.UP))
-                    {
-                        continueGrowing = false;
-                    }
-
-                });
+                //System.out.println("Testt");
             } else {
                 mediaPlayer.stop();
-                stopGrowth(monkey, stick, towers, banana);
+                stage.getScene().removeEventFilter(KeyEvent.KEY_PRESSED,stickgrowth);
+                stage.getScene().removeEventFilter(KeyEvent.KEY_RELEASED,stickgrowthstop);
+                stop_growth(monkey, stick, towers, banana);
             }
         }));
 
@@ -74,30 +61,27 @@ public class Stick {
         stickgrowing.play();
     }
 
-    private void stopGrowth(Monkey monkey, Stick stick, Towers towers, Banana banana) {
-        if (stickgrowing != null) {
-            stickgrowing.stop();
+    private final EventHandler<KeyEvent> stickgrowth = keyEvent -> {
+        if (keyEvent.getCode().equals(KeyCode.UP)) {
+            //System.out.println("GROWTHHHHH");
+            stick.setY((stick.getY() - 10));
+            stick.setHeight(stick.getHeight() + 10);
         }
+    };
 
-        // Remove the event handlers
-        stage.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, keyPressHandler);
-        stage.getScene().removeEventFilter(KeyEvent.KEY_RELEASED, keyReleaseHandler);
+    private final EventHandler<KeyEvent> stickgrowthstop = keyEvent -> {
+        if (keyEvent.getCode().equals(KeyCode.UP)) {
+            //System.out.println("CIRCUMCISED");
+            condition = false;
+        }
+    };
 
+    private void stop_growth(Monkey monkey, Stick stick, Towers towers, Banana banana)  {
+        stickgrowing.stop();
         System.out.println("Stop grow");
-
-        continueGrowing = true;
+        condition = true;
         monkey.monkeypunching(monkey, stick, towers, banana);
     }
-    private final EventHandler<KeyEvent> keyReleaseHandler = eventrelease -> {
-        continueGrowing = false;
-    };
-
-    private final EventHandler<KeyEvent> keyPressHandler = eventpress -> {
-        if (eventpress.getCode().equals(KeyCode.UP)) {
-            stick.setY((stick.getY() - 0.1));
-            stick.setHeight(stick.getHeight() + 0.1);
-        }
-    };
 
     public void stickFalling(Monkey monkey, Stick stick, Towers towers, Banana banana)
     {

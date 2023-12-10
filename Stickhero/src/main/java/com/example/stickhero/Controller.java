@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -35,9 +36,8 @@ public class Controller implements Initializable {
 
     @FXML
     private Rectangle tower1;
-
     @FXML
-    private Button playButton;
+    private Text banana;
     private MediaPlayer startmediaPlayer;
     public void startPosition() {
         tower1.setX(610);
@@ -56,7 +56,7 @@ public class Controller implements Initializable {
         Parent root = loader.load();
 
         PlayingController playingController = loader.getController();
-        playingController.setStage(stage);
+        playingController.setStage(stage, 0);
         playingController.setGameScene(gameScene);
 
         Scene gameScene = new Scene(root);
@@ -68,6 +68,7 @@ public class Controller implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        banana.setText(Integer.toString(Banana.getBanana_count()));
         startPosition();
         File mediafile=new File("src/main/resources/com/example/stickhero/start.mp3");
         Media start=new Media(mediafile.toURI().toString());

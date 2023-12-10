@@ -16,7 +16,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,7 +29,7 @@ public class EndgameController implements Initializable {
     }
 
     private Monkey monkey;
-    public void setMonkey(Monkey monkey){
+    public void setMonkey(Monkey monkey) throws IOException {
         this.monkey = monkey;
         this.score.setText(Integer.toString(monkey.getScore()));
         if(Monkey.getBest_Score() < monkey.getScore())
@@ -35,6 +37,17 @@ public class EndgameController implements Initializable {
             Monkey.setBest_Score(monkey.getScore());
         }
         this.best_score.setText(Integer.toString(Monkey.getBest_Score()));
+        this.banana_score.setText(Integer.toString(Banana.getBanana_count()));
+        PrintWriter out=null;
+        try {
+            out = new PrintWriter(new FileWriter("src/main/resources/com/example/stickhero/score.txt"));
+            out.write(Integer.toString(Monkey.getBest_Score()).concat("\n"));
+            out.write(Integer.toString(Banana.getBanana_count()));
+        }finally{
+            if(out!=null){
+                out.close();
+            }
+        }
     }
 
     private Stage stage;
@@ -53,6 +66,8 @@ public class EndgameController implements Initializable {
     private Text banana_score;
     @FXML
     private Text best_score;
+    @FXML
+    private Text warning;
 
     @FXML
     private ImageView monkeyImageView;
@@ -75,13 +90,11 @@ public class EndgameController implements Initializable {
         endmediaPlayer.play();
     }
 
-    public void revive(MouseEvent event) throws IOException {
-
-    }
 
 
     public void menuSceneShift(MouseEvent event) throws IOException {
         endmediaPlayer.stop();
+        warning.setVisible(false);
 
         FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("Homepage.fxml"));
         Parent root = loader.load();
@@ -94,7 +107,7 @@ public class EndgameController implements Initializable {
 
     public void gameSceneShift(MouseEvent event) throws IOException {
         endmediaPlayer.stop();
-
+        warning.setVisible(false);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -102,7 +115,7 @@ public class EndgameController implements Initializable {
         Parent root = loader.load();
 
         PlayingController playingController = loader.getController();
-        playingController.setStage(stage);
+        playingController.setStage(stage,0);
 
         Scene gameScene = new Scene(root);
         stage.setScene(gameScene);
@@ -110,8 +123,38 @@ public class EndgameController implements Initializable {
         stage.show();
     }
 
-    public void Revive(ActionEvent event) throws IOException {
+    public void Revive(MouseEvent event) throws IOException {
         endmediaPlayer.stop();
-        System.out.println("This is for the revive button");
+        if(Banana.getBanana_count() >= 5) {
+            Banana.setBanana_count(Banana.getBanana_count() - 5);
+
+            PrintWriter out=null;
+            try {
+                out = new PrintWriter(new FileWriter("src/main/resources/com/example/stickhero/score.txt"));
+                out.write(Integer.toString(Monkey.getBest_Score()).concat("\n"));
+                out.write(Integer.toString(Banana.getBanana_count()));
+            }finally{
+                if(out!=null){
+                    out.close();
+                }
+            }
+
+            warning.setVisible(false);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("GameScene.fxml"));
+            Parent root = loader.load();
+
+            PlayingController playingController = loader.getController();
+            playingController.setStage(stage, monkey.getScore());
+
+            Scene gameScene = new Scene(root);
+            stage.setScene(gameScene);
+            stage.setResizable(true);
+            stage.show();
+        } else {
+                warning.setVisible(true);
+        }
+
     }
 }

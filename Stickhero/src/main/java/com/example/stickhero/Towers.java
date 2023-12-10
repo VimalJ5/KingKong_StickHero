@@ -10,11 +10,14 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Towers {
     AnchorPane gamepane;
+
     Stage stage;
+    static int count=2;
     Scene scene;
     ActionEvent event;
     private Timeline moveSceneTimeline;
@@ -35,7 +38,7 @@ public class Towers {
 
     public void setTowerpos(Rectangle tower, Monkey monkey)
     {
-        double randomX = monkey.getCurrentTower().getX() + monkey.getCurrentTower().getWidth() + rand.nextInt(950);
+        double randomX = 20 + monkey.getCurrentTower().getX() + monkey.getCurrentTower().getWidth() + rand.nextInt(930);
         double randomWidth = 50 + monkey.getMonkeyImageView().getFitWidth() + rand.nextInt(150);
 
         tower.setWidth(randomWidth);
@@ -81,7 +84,9 @@ public class Towers {
     //After the monkey crosses this function moves everything back to starting position until stop scene is called
     public void moveScene( Monkey monkey, Stick stick, Towers towers, Banana banana) {
         Rectangle first = monkey.getCurrentTower();
+
         Rectangle second = monkey.getNextTower();
+
         double start_pos = 20;
 
         moveSceneTimeline = new Timeline(new KeyFrame(Duration.seconds(0.009), event -> {
@@ -93,6 +98,8 @@ public class Towers {
             } else {
                 stopping_scene(monkey,stick,towers, banana);
 
+
+
                 Rotate rotate=new Rotate();
                 stick.getStick().setHeight(5);
                 rotate.setAngle(270);
@@ -101,6 +108,8 @@ public class Towers {
                 stick.getStick().getTransforms().add(rotate);
                 stick.getStick().setX(first.getWidth()+first.getX()-stick.getStick().getWidth());
                 stick.getStick().setY(first.getY()-stick.getStick().getHeight());
+
+
 
             }
         }));

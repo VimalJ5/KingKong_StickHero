@@ -8,9 +8,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class MainApplication extends Application {
     @Override
@@ -29,7 +29,17 @@ public class MainApplication extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        Scanner in=null;
+        try{
+            in=new Scanner(new BufferedReader(new FileReader(("src/main/resources/com/example/stickhero/score.txt"))));
+            Monkey.setBest_Score(Integer.parseInt(in.next()));
+            Banana.setBanana_count(Integer.parseInt(in.next()));
+        }finally{
+            if(in!=null){
+                in.close();
+            }
+        }
         launch(args);
     }
 }
